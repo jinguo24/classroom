@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teachingLogCourse" >
+  <resultMap id="BaseResultMap" type="com.simple.model.TeachingLogCourse" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="SKBH" property="skbh" jdbcType="VARCHAR"/>
+		<result column="KCBH" property="kcbh" jdbcType="VARCHAR"/>
+		<result column="KCMC" property="kcmc" jdbcType="VARCHAR"/>
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+		<result column="TEACHER_WENJUAN" property="teacherWenjuan" jdbcType="VARCHAR"/>
+		<result column="STUDENT_WENJUAN" property="studentWenjuan" jdbcType="VARCHAR"/>
+		<result column="OTHER_WENJUAN" property="otherWenjuan" jdbcType="VARCHAR"/>
+		<result column="KKSJ" property="kksj" jdbcType="INTEGER"/>
+		<result column="XN" property="xn" jdbcType="VARCHAR"/>
+		<result column="KTZY_WENJUAN" property="ktzyWenjuan" jdbcType="VARCHAR"/>
+		<result column="KHZY_WENJUAN" property="khzyWenjuan" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,SKBH,KCBH,KCMC,KCXLBH,KCXLMC,TEACHER_WENJUAN,STUDENT_WENJUAN,OTHER_WENJUAN,KKSJ,XN,KTZY_WENJUAN,KHZY_WENJUAN
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.TeachingLogCourse">
+  	insert into teaching_log_course (TANENTID,SKBH,KCBH,KCMC,KCXLBH,KCXLMC,TEACHER_WENJUAN,STUDENT_WENJUAN,OTHER_WENJUAN,KKSJ,XN,KTZY_WENJUAN,KHZY_WENJUAN) 
+  		values (#{tanentid},#{skbh},#{kcbh},#{kcmc},#{kcxlbh},#{kcxlmc},#{teacherWenjuan},#{studentWenjuan},#{otherWenjuan},#{kksj},#{xn},#{ktzyWenjuan},#{khzyWenjuan})
+  </insert>
+  
+  <select id="querySKBH" parameterType="java.util.Map" resultType="String">
+  	select distinct SKBH from teaching_log_course where 1=1
+  	<if test="tanentId != null and tanentId != ''" > and TANENTID =#{tanentId} </if>
+  	<if test="kcbh != null and kcbh != ''" > and KCBH = #{kcbh} </if>
+  	<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
+  </select>
+  
+  <resultMap id="KeChengXiLieResultMap" type="com.simple.model.api.KeChengXiLie" >
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <select id="queryXiLie" parameterType="java.util.Map" resultMap="KeChengXiLieResultMap">
+  	select distinct KCXLBH,KCXLMC from teaching_log_course SKBH in 
+  	<foreach item="item" index="index" collection="skbhlist" open="(" separator="," close=")">  
+	  #{item}  
+	</foreach>
+  	<if test="tanentId != null and tanentId != ''" > and TANENTID =#{tanentId} </if>
+  </select>
+</mapper>

@@ -1,0 +1,11 @@
+# ignore any output
+# note: although we allow the IDE specific files, it just for
+#       sharing and contributing. It is NOT guaranteed that 
+#       these files works for your ide env. And pay careful
+#       attentation these files when you push sources 
+
+*.class
+/**/target
+/**/*.iml
+/**/.idea/*
+/target

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="app" >
+  <resultMap id="BaseResultMap" type="com.simple.model.App" >
+		<id column="LINEID" property="lineId" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentId" jdbcType="VARCHAR"/>
+		<result column="XXBH" property="xxbh" jdbcType="VARCHAR"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
+		<result column="JSBH" property="jsbh" jdbcType="VARCHAR"/>
+		<result column="JSMC" property="jsmc" jdbcType="VARCHAR"/>
+		<result column="BBH" property="bbh" jdbcType="VARCHAR"/>
+		<result column="APPXZDZ" property="appxzdz" jdbcType="DATE"/>
+		<result column="DQYXZT" property="dqyxzt" jdbcType="VARCHAR"/>
+		<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="DATE"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,XXBH,XXMC,JSBH,JSMC,BBH,APPXZDZ,DQYXZT,BZ,CJR,CJSJ
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.ClassAuthorize">
+  	insert into t_app (TANENTID,XXBH,XXMC,JSBH,JSMC,BBH,APPXZDZ,DQYXZT,BZ,CJR,CJSJ) 
+  		values (#{tanentId},#{xxbh},#{xxmc},#{jsbh},#{jsmc},#{bbh},#{appxzdz},#{dqyxzt},#{bz},#{cjr},#{cjsj})
+  </insert>
+  
+  
+  <resultMap id="CheckVersionResultMap" type="com.simple.model.api.CheckVersion" >
+		<result column="BBH" property="bbh" jdbcType="VARCHAR"/>
+		<result column="APPXZDZ" property="appxzdz" jdbcType="DATE"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+  </resultMap>
+   <select id="queryValid" resultMap="CheckVersionResultMap" parameterType="String">
+  	select  BBH,CJSJ,APPXZDZ
+  	from t_app where TANENTID = #{tanentId} and DQYXZT = 1 limit 0,1
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="section" >
+  <resultMap id="BaseResultMap" type="com.simple.model.Section" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="leaseholder_id" property="leaseholderId" jdbcType="VARCHAR" />
+		<result column="template_code" property="templateCode" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,leaseholder_id,template_code,code,name,sort
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.Section">
+  	insert into section (leaseholder_id,template_code,code,name,sort) 
+  		values (#{leaseholderId},#{templateCode},#{code},#{name},#{sort})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from section where 1=1
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="code != null and code != ''" > and code = #{code} </if>
+  	<if test="templateCode != null and templateCode != ''" > and template_code = #{templateCode} </if>
+  	<if test="name != null and name != ''" > and name like CONCAT('%',#{name},'%') </if>
+  	order by sort asc limit #{begin},#{size}
+  </select>
+  
+  <delete id="deleteByTemplateCode" parameterType="String">
+  		delete from section where template_code = #{templateCode};
+  </delete>
+  
+</mapper>

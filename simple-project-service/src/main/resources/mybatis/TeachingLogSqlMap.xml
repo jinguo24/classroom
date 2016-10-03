@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teachingLog" >
+  <resultMap id="BaseResultMap" type="com.simple.model.TeachingLog" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="SKBH" property="skbh" jdbcType="VARCHAR"/>
+		<result column="XN" property="xn" jdbcType="INTEGER"/>
+		<result column="NJBH" property="njbh" jdbcType="VARCHAR"/>
+		<result column="NJMC" property="njmc" jdbcType="VARCHAR"/>
+		<result column="BJBH" property="bjbh" jdbcType="VARCHAR"/>
+		<result column="BJMC" property="bjmc" jdbcType="VARCHAR"/>
+		<result column="XM" property="xm" jdbcType="VARCHAR"/>
+		<result column="SKSJ" property="sksj" jdbcType="DATE"/>
+		<result column="XXBH" property="xxbh" jdbcType="VARCHAR"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
+		<result column="GH" property="gh" jdbcType="VARCHAR"/>
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+		<result column="KCBH" property="kcbh" jdbcType="VARCHAR"/>
+		<result column="KCMC" property="kcmc" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,SKBH,XN,NJBH,NJMC,BJBH,BJMC,XM,SKSJ,XXBH,XXMC,GH
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.TeachingLog">
+  	insert into teaching_log (TANENTID,SKBH,XN,NJBH,NJMC,BJBH,BJMC,XM,SKSJ,XXBH,XXMC,GH) 
+  		values (#{tanentid},#{skbh},#{xn},#{njbh},#{njmc},#{bjbh},#{bjmc},#{xm},#{sksj},#{xxbh},#{xxmc},#{gh})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from teaching_log where 1 =1 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+  	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+  	<if test="njmc != null and njmc != ''" > and NJMC like CONCAT('%',#{njmc},'%') </if>
+  	<if test="bjbh != null and bjbh != ''" > and BJBH = #{bjbh} </if>
+  	<if test="bjmc != null and bjmc != ''" > and BJMC like CONCAT('%',#{bjmc},'%') </if>
+  	<if test="skbh != null and skbh != ''" > and SKBH = #{skbh} </if>
+  	<if test="beginTime != null and beginTime != ''" > and SKSJ &lt;= #{beginTime} </if>
+  	<if test="endTime != null and endTime != ''" > and SKSJ &gt;= #{endTime} </if>
+  	<if test="gh != null and gh != ''" > and GH = #{gh} </if>
+  	<if test="xm != null and xm != ''" > and XM like CONCAT('%',#{xm},'%') </if>
+  	<if test="xn  > 0 " > and XN = #{xn} </if>
+  	<if test="skbhs != null "> and SKBH in 
+  		<foreach item="item" index="index" collection="skbhs" open="(" separator="," close=")">  
+		  #{item}  
+		</foreach> 
+  	</if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM teaching_log 
+		WHERE 1=1
+		<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+	  	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+	  	<if test="njmc != null and njmc != ''" > and NJMC like CONCAT('%',#{njmc},'%') </if>
+	  	<if test="bjbh != null and bjbh != ''" > and BJBH = #{bjbh} </if>
+	  	<if test="bjmc != null and bjmc != ''" > and BJMC like CONCAT('%',#{bjmc},'%') </if>
+	  	<if test="skbh != null and skbh != ''" > and SKBH = #{skbh} </if>
+	  	<if test="beginTime != null and beginTime != ''" > and SKSJ &lt;= #{beginTime} </if>
+	  	<if test="endTime != null and endTime != ''" > and SKSJ &gt;= #{endTime} </if>
+	  	<if test="gh != null and gh != ''" > and GH = #{gh} </if>
+	  	<if test="xm != null and xm != ''" > and XM like CONCAT('%',#{xm},'%') </if>
+	  	<if test="xn  > 0 " > and XN = #{xn} </if>
+	  	<if test="skbhs != null "> and SKBH in 
+	  		<foreach item="item" index="index" collection="skbhs" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach> 
+	  	</if>
+  </select>
+  
+  <select id="queryCourseLog" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select log.TANENTID,log.SKBH,log.XN,log.NJBH,log.NJMC,log.BJBH,log.BJMC,log.XM,log.SKSJ,log.XXBH,log.XXMC,log.GH,
+  	logCourse.KCXLBH,logCourse.KCXLMC,logCourse.KCBH,logCourse.KCMC
+  	from teaching_log log left join teaching_log_course logCourse 
+  	on log.SKBH = logCourse.SKBH where 1 = 1
+  	<if test="leaseholderId != null and leaseholderId != ''" > and log.TANENTID = #{leaseholderId} </if>
+  	<if test="njbh != null and njbh != ''" > and log.NJBH = #{njbh} </if>
+  	<if test="njmc != null and njmc != ''" > and log.NJMC like CONCAT('%',#{njmc},'%') </if>
+  	<if test="bjbh != null and bjbh != ''" > and log.BJBH = #{bjbh} </if>
+  	<if test="bjmc != null and bjmc != ''" > and log.BJMC like CONCAT('%',#{bjmc},'%') </if>
+  	<if test="kcxlbh != null and kcxlbh != ''" > and logCourse.KCXLBH = #{kcxlbh} </if>
+  	<if test="kcxlmc != null and kcxlmc != ''" > and logCourse.KCXLMC like CONCAT('%',#{kcxlmc},'%') </if>
+  	<if test="kcbh != null and kcbh != ''" > and logCourse.KCBH = #{kcbh} </if>
+  	<if test="kcmc != null and kcmc != ''" > and logCourse.KCMC like CONCAT('%',#{kcmc},'%') </if>
+  	<if test="skbh != null and skbh != ''" > and log.SKBH = #{skbh} </if>
+  	<if test="beginTime != null and beginTime != ''" > and log.SKSJ &lt;= #{beginTime} </if>
+  	<if test="endTime != null and endTime != ''" > and log.SKSJ &gt;= #{endTime} </if>
+  	<if test="gh != null and gh != ''" > and log.GH = #{gh} </if>
+  	<if test="xm != null and xm != ''" > and log.XM like CONCAT('%',#{xm},'%') </if>
+  	<if test="xn  > 0 " > and log.XN = #{xn} </if>
+  	<if test="skbhs != null "> and log.SKBH in 
+  		<foreach item="item" index="index" collection="skbhs" open="(" separator="," close=")">  
+		  #{item}  
+		</foreach> 
+  	</if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCourseLogCount" parameterType="java.util.Map" resultType="int">
+	  select count(1) from teaching_log log left join teaching_log_course logCourse 
+	  	on log.SKBH = logCourse.SKBH where 1 = 1
+		<if test="leaseholderId != null and leaseholderId != ''" > and log.TANENTID = #{leaseholderId} </if>
+	  	<if test="njbh != null and njbh != ''" > and log.NJBH = #{njbh} </if>
+	  	<if test="njmc != null and njmc != ''" > and log.NJMC like CONCAT('%',#{njmc},'%') </if>
+	  	<if test="bjbh != null and bjbh != ''" > and log.BJBH = #{bjbh} </if>
+	  	<if test="bjmc != null and bjmc != ''" > and log.BJMC like CONCAT('%',#{bjmc},'%') </if>
+	  	<if test="kcxlbh != null and kcxlbh != ''" > and logCourse.KCXLBH = #{kcxlbh} </if>
+	  	<if test="kcxlmc != null and kcxlmc != ''" > and logCourse.KCXLMC like CONCAT('%',#{kcxlmc},'%') </if>
+	  	<if test="kcbh != null and kcbh != ''" > and logCourse.KCBH = #{kcbh} </if>
+	  	<if test="kcmc != null and kcmc != ''" > and logCourse.KCMC like CONCAT('%',#{kcmc},'%') </if>
+	  	<if test="skbh != null and skbh != ''" > and log.SKBH = #{skbh} </if>
+	  	<if test="beginTime != null and beginTime != ''" > and log.SKSJ &lt;= #{beginTime} </if>
+	  	<if test="endTime != null and endTime != ''" > and log.SKSJ &gt;= #{endTime} </if>
+	  	<if test="gh != null and gh != ''" > and log.GH = #{gh} </if>
+	  	<if test="xm != null and xm != ''" > and log.XM like CONCAT('%',#{xm},'%') </if>
+	  	<if test="xn  > 0 " > and log.XN = #{xn} </if>
+	  	<if test="skbhs != null "> and log.SKBH in 
+	  		<foreach item="item" index="index" collection="skbhs" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach> 
+	  	</if>
+  </select>
+  
+  <select id="queryBySkbh" parameterType="String" resultMap="BaseResultMap">
+	 select <include refid="Base_Column_List"></include> from teaching_log where SKBH = #{skbh}
+  </select>
+  
+  <select id="queryTeacherSkbhs" parameterType="java.util.Map" resultType="String">
+	 select distinct SKBH from teaching_log where TANENTID = #{tanentId} and GH =#{gh}
+  </select>
+  
+</mapper>

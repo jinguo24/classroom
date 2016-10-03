@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="classRegister" >
+  <resultMap id="BaseResultMap" type="com.simple.model.ClassRegister" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="XXBH" property="xxbh" jdbcType="VARCHAR"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
+		<result column="JSBH" property="jsbh" jdbcType="VARCHAR"/>
+		<result column="JSMC" property="jsmc" jdbcType="VARCHAR"/>
+		<result column="JSDZ" property="jsdz" jdbcType="VARCHAR"/>
+		<result column="SQZH" property="sqzh" jdbcType="VARCHAR"/>
+		<result column="SQMM" property="sqmm" jdbcType="VARCHAR"/>
+		<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+		<result column="YXZT" property="yxzt" jdbcType="VARCHAR"/>
+		<result column="VERSION" property="version" jdbcType="VARCHAR"/>
+		<result column="XZXM" property="xzxm" jdbcType="VARCHAR"/>
+		<result column="GLYXX" property="glyxx" jdbcType="VARCHAR"/>
+		<result column="JFRQ" property="jfrq" jdbcType="TIMESTAMP"/>
+		<result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,XXBH,XXMC,JSBH,JSMC,JSDZ,SQZH,SQMM,BZ,CJR,CJSJ,YXZT,VERSION,XZXM,GLYXX,JFRQ,EMAIL
+  </sql>
+  
+  <insert id="insert" useGeneratedKeys="true" keyProperty="lineid" parameterType="com.simple.model.ClassRegister">
+  	insert into class_register (TANENTID,XXBH,XXMC,JSBH,JSMC,JSDZ,SQZH,SQMM,BZ,CJR,CJSJ,YXZT,VERSION,XZXM,GLYXX,JFRQ,EMAIL) 
+  		values (#{tanentid},#{xxbh},#{xxmc},#{jsbh},#{jsmc},#{jsdz},#{sqzh},#{sqmm},#{bz},#{cjr},
+  		#{cjsj},#{yxzt},#{version},#{xzxm},#{glyxx},#{jfrq},#{email})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from class_register where 1 =1 
+  	<if test="lineid != null and lineid != ''" > and LINEID = #{lineid} </if>
+  	<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+  	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
+  	<if test="xxbh != null and xxbh != ''" > and XXBH = #{xxbh} </if>
+  	<if test="xxmc != null and xxmc != ''" > and XXMC like CONCAT('%',#{xxmc},'%') </if>
+  	<if test="beginTime != null and beginTime != ''" > and CJSJ &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and CJSJ &lt;= #{endTime} </if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM class_register 
+		WHERE 1=1
+		<if test="lineid != null and lineid != ''" > and LINEID = #{lineid} </if>
+		<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+		<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
+		<if test="xxbh != null and xxbh != ''" > and XXBH = #{xxbh} </if>
+	  	<if test="xxmc != null and xxmc != ''" > and XXMC like CONCAT('%',#{xxmc},'%') </if>
+	  	<if test="beginTime != null and beginTime != ''" > and CJSJ &gt;= #{beginTime} </if>
+		<if test="endTime != null and endTime != ''" > and CJSJ &lt;= #{endTime} </if>
+  </select>
+  
+  <delete id="delete" parameterType="Integer">
+  		delete from class_register where LINEID = #{id};
+  </delete>
+  
+  <update id="update" parameterType="com.simple.model.ClassRegister">
+    update class_register set 
+		XXBH         = #{xxbh},    
+		XXMC         = #{xxmc},    
+		JSBH         = #{jsbh},    
+		JSMC         = #{jsmc},    
+		JSDZ         = #{jsdz},    
+		SQZH         = #{sqzh},    
+		BZ           = #{bz},      
+		YXZT         = #{yxzt},    
+		VERSION      = #{version},
+		XZXM         = #{xzxm},
+		GLYXX        = #{glyxx},
+		JFRQ         = #{jfrq},
+		EMAIL        = #{email}
+  	where TANENTID  = #{tanentid}
+  	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
+  </update>
+  
+   <update id="updatePassword" parameterType="java.util.Map">
+    update class_register set SQMM = #{password}
+  	where SQZH = #{sqzh}
+  </update>
+  
+  <resultMap id="ImageResultMap" type="com.simple.model.RegisterImage" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="JSBH" property="jsbh" jdbcType="VARCHAR"/>
+		<result column="TANENTID" property="tanentId" jdbcType="VARCHAR"/>
+		<result column="IMAGE_TYPE" property="imageType" jdbcType="VARCHAR"/>
+		<result column="IMAGE_URL" property="imageUrl" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <sql id="Image_Column_List" >
+	LINEID,JSBH,TANENTID,IMAGE_TYPE,IMAGE_URL
+  </sql>
+  
+  <insert id="insertImages" parameterType="com.simple.model.RegisterImage">
+  	insert into class_register_image (JSBH,TANENTID,IMAGE_TYPE,IMAGE_URL) 
+  		values (#{jsbh},#{tanentId},#{imageType},#{imageUrl})
+  </insert>
+  
+  <delete id="deleteImages" parameterType="java.util.Map">
+  	delete from class_register_image where TANENTID = #{tanentId} 
+  	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
+  </delete>
+  
+  <select id="queryImages" resultMap="ImageResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Image_Column_List"></include>
+  	from class_register_image where TANENTID = #{tanentId}
+  	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if> 
+  	<if test="imageType != null and imageType != ''" > and IMAGE_TYPE = #{imageType} </if>
+  </select>
+  
+  <select id="queryBySQZH" parameterType="String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include> 
+  	from class_register where SQZH = #{sqzh} limit 0,1
+  </select>
+</mapper>

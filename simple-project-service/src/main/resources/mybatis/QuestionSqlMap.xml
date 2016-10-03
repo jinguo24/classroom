@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="question" >
+  <resultMap id="BaseResultMap" type="com.simple.model.Question" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="leaseholder_id" property="leaseholderId" jdbcType="VARCHAR" />
+		<result column="tempalte_code" property="tempalteCode" jdbcType="VARCHAR" />
+		<result column="section_code" property="sectionCode" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="score" property="score" jdbcType="INTEGER" />
+		<result column="bida" property="require" jdbcType="INTEGER" />
+		<result column="tiaozhuan" property="ignore" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,leaseholder_id,tempalte_code,section_code,code,sort,title,type,score,bida,tiaozhuan
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.Question">
+  	insert into question (leaseholder_id,tempalte_code,section_code,code,sort,title,type,score,bida,tiaozhuan) 
+  		values (#{leaseholderId},#{tempalteCode},#{sectionCode},#{code},#{sort},#{title},#{type},#{score},#{require},#{ignore})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from question where 1=1
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="code != null and code != ''" > and code = #{code} </if>
+  	<if test="tempalteCode != null and tempalteCode != ''" > and tempalte_code = #{tempalteCode} </if>
+  	<if test="sectionCode != null and sectionCode != ''" > and section_code = #{sectionCode} </if>
+  	order by sort asc limit #{begin},#{size}
+  </select>
+  
+   <delete id="deleteByTemplateCode" parameterType="String">
+  		delete from question where tempalte_code = #{tempalteCode};
+  </delete>
+</mapper>

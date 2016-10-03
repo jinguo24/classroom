@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="classStudent" >
+  <resultMap id="BaseResultMap" type="com.simple.model.TClassStudent" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="XXHB" property="xxhb" jdbcType="VARCHAR"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
+		<result column="NJBH" property="njbh" jdbcType="VARCHAR"/>
+		<result column="NJMC" property="njmc" jdbcType="VARCHAR"/>
+		<result column="BJBH" property="bjbh" jdbcType="VARCHAR"/>
+		<result column="BJMC" property="bjmc" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="TIMESTAMP"/>
+		<result column="GH" property="gh" jdbcType="VARCHAR"/>
+		<result column="XM" property="xm" jdbcType="VARCHAR"/>
+		<result column="XN" property="xn" jdbcType="INTEGER"/>
+		<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+		<result column="SIGN" property="sign" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,XXHB,XXMC,NJBH,NJMC,BJBH,BJMC,CJR,CJSJ,GH,XM,XN,BZ,SIGN
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.TClassStudent">
+  	insert into t_class_student (TANENTID,XXHB,XXMC,NJBH,NJMC,BJBH,BJMC,CJR,CJSJ,GH,XM,XN,BZ,SIGN) 
+  		values (#{tanentid},#{xxhb},#{xxmc},#{njbh},#{njmc},#{bjbh},#{bjmc},#{cjr},
+  		#{cjsj},#{gh},#{xm},#{xn},#{bz},#{sign})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from t_class_student where 1 =1 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+  	<if test="xxhb != null and xxhb != ''" > and XXHB = #{xxhb} </if>
+  	<if test="xxmc != null and xxmc != ''" > and XXMC like CONCAT('%',#{xxmc},'%') </if>
+  	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+  	<if test="njmc != null and njmc != ''" > and NJMC like CONCAT('%',#{njmc},'%') </if>
+  	<if test="bjbh != null and bjbh != ''" > and BJBH = #{bjbh} </if>
+  	<if test="bjmc != null and bjmc != ''" > and BJMC like CONCAT('%',#{bjmc},'%') </if>
+  	<if test="gh != null and gh != ''" > and GH = #{gh} </if>
+  	<if test="xm != null and xm != ''" > and XM like CONCAT('%',#{xm},'%') </if>
+  	<if test="xn  > 0 " > and XN = #{xn} </if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM t_class_student 
+		WHERE 1=1
+		<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+	  	<if test="xxhb != null and xxhb != ''" > and XXHB = #{xxhb} </if>
+	  	<if test="xxmc != null and xxmc != ''" > and XXMC like CONCAT('%',#{xxmc},'%') </if>
+	  	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+	  	<if test="njmc != null and njmc != ''" > and NJMC like CONCAT('%',#{njmc},'%') </if>
+	  	<if test="bjbh != null and bjbh != ''" > and BJBH = #{bjbh} </if>
+	  	<if test="bjmc != null and bjmc != ''" > and BJMC like CONCAT('%',#{bjmc},'%') </if>
+	  	<if test="gh != null and gh != ''" > and GH = #{gh} </if>
+	  	<if test="xm != null and xm != ''" > and XM like CONCAT('%',#{xm},'%') </if>
+	  	<if test="xn  > 0 " > and XN = #{xn} </if>
+  </select>
+  
+  <delete id="delete" parameterType="Integer">
+  		delete from t_class_student where LINEID = #{id};
+  </delete>
+  
+  <update id="update" parameterType="com.simple.model.TClassStudent">
+    update t_class_student set 
+  	TANENTID=#{tanentid},XXHB=#{xxhb},XXMC=#{xxmc},NJBH=#{njbh},NJMC=#{njmc},BJBH=#{bjbh},BJMC=#{bjmc},
+  	CJR=#{cjr},CJSJ=#{cjsj},GH=#{gh},XM=#{xm},XN=#{xn},BZ=#{bz}
+  	where LINEID=#{lineid}
+  </update>
+  
+  <resultMap id="XueYuanResultMap" type="com.simple.model.api.XueYuan" >
+		<result column="GH" property="gh" jdbcType="VARCHAR"/>
+		<result column="XM" property="xm" jdbcType="VARCHAR"/>
+		<result column="SIGN" property="sign" jdbcType="INTEGER"/>
+  </resultMap>
+  <select id="queryXueYuan" resultMap="XueYuanResultMap" parameterType="java.util.Map">
+  	select GH,XM,SIGN from t_class_student where TANENTID = #{tanentId} 
+  	and XXHB = #{xxbh} and NJBH = #{njbh} and BJBH = #{bjbh} 
+	<!-- AND xn = IF(MONTH(NOW()) &lt; 9 ,YEAR(NOW())-1,YEAR(NOW())  ) -->
+  </select>
+  
+  <select id="queryGhs" resultType="String" parameterType="java.util.Map">
+  	select GH from t_class_student where TANENTID = #{tanentId} and BJBH = #{bjbh} and XN = #{xn}
+  </select>
+  
+  <delete id="deleteBatchs" parameterType="java.util.Map">
+  		delete from t_class_student where TANENTID = #{tanentId} and BJBH = #{bjbh} and XN = #{xn}
+  </delete>
+  
+</mapper>

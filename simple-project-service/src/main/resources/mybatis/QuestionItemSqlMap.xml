@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="questionItem" >
+  <resultMap id="BaseResultMap" type="com.simple.model.QuestionItem" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="leaseholder_id" property="leaseholderId" jdbcType="VARCHAR" />
+		<result column="tempalte_code" property="tempalteCode" jdbcType="VARCHAR" />
+		<result column="section_code" property="sectionCode" jdbcType="VARCHAR" />
+		<result column="question_code" property="questionCode" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+		<result column="mark" property="mark" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="score" property="score" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="image" property="image" jdbcType="VARCHAR" />
+		<result column="tip" property="tip" jdbcType="VARCHAR" />
+		<result column="isAnswer" property="isAnswer" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,leaseholder_id,tempalte_code,section_code,question_code,code,sort,mark,description,score,content,image,tip,isAnswer
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.QuestionItem">
+  	insert into questionItem (leaseholder_id,tempalte_code,section_code,question_code,code,sort,mark,description,score,content,image,tip,isAnswer) 
+  		values (#{leaseholderId},#{tempalteCode},#{sectionCode},#{questionCode},#{code},#{sort},#{mark},#{description},#{score},#{content},
+  		#{image},#{tip},#{isAnswer})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from questionItem where 1=1
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="code != null and code != ''" > and code = #{code} </if>
+  	<if test="questionCode != null and questionCode != ''" > and question_code = #{questionCode} </if>
+  	<if test="sectionCode != null and sectionCode != ''" > and section_code = #{sectionCode} </if>
+  	<if test="tempalteCode != null and tempalteCode != ''" > and tempalte_code = #{tempalteCode} </if>
+  	order by sort asc limit #{begin},#{size}
+  </select>
+  
+  <delete id="deleteByTemplateCode" parameterType="String">
+  		delete from questionItem where tempalte_code = #{tempalteCode};
+  </delete>
+</mapper>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="course" >
+  <resultMap id="BaseResultMap" type="com.simple.model.Course" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+		<result column="KCJJ" property="kcjj" jdbcType="VARCHAR"/>
+		<result column="KCNR" property="kcnr" jdbcType="VARCHAR"/>
+		<result column="KCTP" property="kctp" jdbcType="VARCHAR"/>
+		<result column="KJDZ" property="kjdz" jdbcType="VARCHAR"/>
+		<result column="TEACHER_WENJUAN" property="teacherWenjuan" jdbcType="VARCHAR"/>
+		<result column="STUDENT_WENJUAN" property="studentWenjuan" jdbcType="VARCHAR"/>
+		<result column="OTHER_WENJUAN" property="otherWenjuan" jdbcType="VARCHAR"/>
+		<result column="KCBZ" property="kcbz" jdbcType="VARCHAR"/>
+		<result column="KCJC" property="kcjc" jdbcType="VARCHAR"/>
+		<result column="KTZY_WENJUAN" property="ktzyWenjuan" jdbcType="VARCHAR"/>
+		<result column="KHZY_WENJUAN" property="khzyWenjuan" jdbcType="VARCHAR"/>
+		<result column="VERSION" property="version" jdbcType="VARCHAR"/>
+		<result column="SYJS_VERSION" property="syjsWersion" jdbcType="VARCHAR"/>
+		<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+		<result column="YXZT" property="yxzt" jdbcType="VARCHAR"/>
+		<result column="SPLB" property="splb" jdbcType="VARCHAR"/>
+		<result column="SPKC" property="spkc" jdbcType="INTEGER"/>
+		<result column="DMTKJDZ" property="dmtkzdz" jdbcType="INTEGER"/>
+		<result column="JIAOAN" property="jiaoan" jdbcType="VARCHAR"/>
+		<result column="JJSYSMJQD" property="jjsysmjqd" jdbcType="VARCHAR"/>
+		<result column="KCSC" property="kcsc" jdbcType="VARCHAR"/>
+		<result column="TIKU" property="tiku" jdbcType="VARCHAR"/>
+		<result column="NJBH" property="njbh" jdbcType="VARCHAR"/>
+		<result column="CHILD_KCXLBH" property="childKcxlbh" jdbcType="VARCHAR"/>
+		<result column="CHILD_KCXLMC" property="childKcxlmc" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,CODE,NAME,KCXLBH,KCXLMC,KCJJ,KCNR,KCTP,KJDZ,TEACHER_WENJUAN,STUDENT_WENJUAN,OTHER_WENJUAN,KCBZ,KCJC,KTZY_WENJUAN,
+	KHZY_WENJUAN,VERSION,SYJS_VERSION,BZ,CJR,CJSJ,YXZT,SPLB,SPKC,DMTKJDZ,JIAOAN,JJSYSMJQD,KCSC,TIKU,NJBH,CHILD_KCXLBH,CHILD_KCXLMC
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.Course">
+  	insert into course (CODE,NAME,KCXLBH,KCXLMC,KCJJ,KCNR,KCTP,KJDZ,TEACHER_WENJUAN,STUDENT_WENJUAN,OTHER_WENJUAN,
+  				KCBZ,KCJC,KTZY_WENJUAN,KHZY_WENJUAN,VERSION,SYJS_VERSION,BZ,CJR,CJSJ,YXZT,SPLB,SPKC,DMTKJDZ,JIAOAN,JJSYSMJQD,KCSC,TIKU,
+  				NJBH,CHILD_KCXLBH,CHILD_KCXLMC) 
+  		values (#{code},#{name},#{kcxlbh},#{kcxlmc},#{kcjj},#{kcnr},#{kctp},#{kjdz},#{teacherWenjuan},#{studentWenjuan},#{otherWenjuan},
+  		#{kcbz},#{kcjc},#{ktzyWenjuan},#{khzyWenjuan},#{version},#{syjsWersion},#{bz},#{cjr},#{cjsj},#{yxzt},#{splb},#{spkc},#{dmtkzdz},
+  		#{jiaoan},#{jjsysmjqd},#{kcsc},#{tiku},#{njbh},#{childKcxlbh},#{childKcxlmc})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from course where 1 =1 
+  	<if test="lineid != null and lineid != ''" > and LINEID = #{lineid} </if>
+  	<if test="code != null and code != ''" > and CODE = #{code} </if>
+  	<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
+  	<if test="syjsWersion != null and syjsWersion != ''" > and SYJS_VERSION = #{syjsWersion} </if>
+  	<if test="name != null and name != ''" > and NAME like CONCAT('%',#{name},'%') </if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM course 
+		WHERE 1=1
+		<if test="lineid != null and lineid != ''" > and LINEID = #{lineid} </if>
+	  	<if test="code != null and code != ''" > and CODE = #{code} </if>
+	  	<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
+  		<if test="syjsWersion != null and syjsWersion != ''" > and SYJS_VERSION = #{syjsWersion} </if>
+	  	<if test="name != null and name != ''" > and NAME like CONCAT('%',#{name},'%') </if>
+  </select>
+  
+  <delete id="delete" parameterType="Integer">
+  		delete from course where LINEID = #{id};
+  </delete>
+  
+  <update id="update" parameterType="com.simple.model.Course">
+    update course set 
+		NAME            = #{name}            ,
+		KCXLBH          = #{kcxlbh}          ,
+		KCXLMC          = #{kcxlmc}          ,
+		KCJJ            = #{kcjj}            ,
+		KCNR            = #{kcnr}            ,
+		KCTP            = #{kctp}            ,
+		KJDZ            = #{kjdz}            ,
+		TEACHER_WENJUAN = #{teacherWenjuan}  ,
+		STUDENT_WENJUAN = #{studentWenjuan}  ,
+		OTHER_WENJUAN   = #{otherWenjuan}    ,
+		KCBZ            = #{kcbz}            ,
+		KCJC            = #{kcjc}            ,
+		KTZY_WENJUAN    = #{ktzyWenjuan}     ,
+		KHZY_WENJUAN    = #{khzyWenjuan}     ,
+		VERSION         = #{version}         ,
+		SYJS_VERSION    = #{syjsWersion}     ,
+		BZ              = #{bz}              ,
+		YXZT            = #{yxzt}            ,
+		SPLB            = #{splb}            ,
+		SPKC            = #{spkc}            ,
+		DMTKJDZ         = #{dmtkzdz}         ,
+		JIAOAN			= #{jiaoan} 		 ,
+		JJSYSMJQD		= #{jjsysmjqd} 		 ,
+		KCSC			= #{kcsc} 		     ,
+		TIKU   			= #{tiku}            ,
+		NJBH            = #{njbh}            ,
+		CHILD_KCXLBH    = #{childKcxlbh}     ,
+		CHILD_KCXLMC    = #{childKcxlmc}
+  	where CODE = #{code}
+  </update>
+  
+  
+   <resultMap id="KeChengResultMap" type="com.simple.model.api.KeCheng" >
+		<result column="CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="KCJJ" property="kcjj" jdbcType="VARCHAR"/>
+		<result column="KCTP" property="kctp" jdbcType="VARCHAR"/>
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+		<result column="SPLB" property="splb" jdbcType="VARCHAR"/>
+		<result column="CHILD_KCXLBH" property="childKcxlbh" jdbcType="VARCHAR"/>
+		<result column="CHILD_KCXLMC" property="childKcxlmc" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="queryKeCheng" resultMap="KeChengResultMap">
+  	select CODE,NAME,KCJJ,KCTP,KCXLBH,KCXLMC,SPLB,CHILD_KCXLBH,CHILD_KCXLMC from course where 
+  	CODE in 
+  	<foreach item="item" index="index" collection="courseBhlist" open="(" separator="," close=")">  
+	  #{item}  
+	</foreach>
+	<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
+	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+	limit #{begin},#{size}
+  </select>
+  
+   <select id="queryKeChengCount" resultType="Integer">
+  	select count(1) from course where 
+  	CODE in 
+  	<foreach item="item" index="index" collection="courseBhlist" open="(" separator="," close=")">  
+	  #{item}  
+	</foreach>
+	<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
+	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+  </select>
+  
+  <resultMap id="KeChengInfoResultMap" type="com.simple.model.api.KeChengInfo" >
+		<result column="CODE" property="code" jdbcType="VARCHAR"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="KCJJ" property="kcjj" jdbcType="VARCHAR"/>
+		<result column="KCTP" property="kctp" jdbcType="VARCHAR"/>
+		<result column="SPLB" property="splb" jdbcType="VARCHAR"/>
+		<result column="KCNR" property="kcnr" jdbcType="VARCHAR"/>
+		<result column="KJDZ" property="kjdz" jdbcType="VARCHAR"/>
+		<result column="TEACHER_WENJUAN" property="teacherWenjuan" jdbcType="VARCHAR"/>
+		<result column="STUDENT_WENJUAN" property="studentWenjuan" jdbcType="VARCHAR"/>
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+		<result column="CHILD_KCXLBH" property="childKcxlbh" jdbcType="VARCHAR"/>
+		<result column="CHILD_KCXLMC" property="childKcxlmc" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="queryKeChengInfo" resultMap="KeChengInfoResultMap" parameterType="java.util.Map">
+  	select CODE,NAME,KCJJ,KCTP,SPLB,KCNR,KJDZ,TEACHER_WENJUAN,STUDENT_WENJUAN,KCXLBH,KCXLMC,CHILD_KCXLBH,CHILD_KCXLMC from course 
+  	where CODE = #{code} 
+  </select>
+  
+  <select id="queryXiLieBhList" resultType="String">
+  	select distinct KCXLBH from course where CODE in 
+  	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+	  #{item}  
+	</foreach> 
+  </select>
+  
+  <select id="queryCouserBhList" resultType="String">
+  	select CODE from course where KCXLBH = #{xlbh} 
+  </select>
+  
+</mapper>

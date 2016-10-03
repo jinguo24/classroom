@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sysUser" >
+  <resultMap id="BaseResultMap" type="com.simple.model.SysUser" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="leaseholder_id" property="leaseholderId" jdbcType="VARCHAR"/>
+		<result column="student_id" property="studentId" jdbcType="VARCHAR"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="english_name" property="englishName" jdbcType="VARCHAR"/>
+		<result column="pinyin_name" property="pinyinName" jdbcType="VARCHAR"/>
+		<result column="ever_name" property="everName" jdbcType="VARCHAR"/>
+		<result column="sex_code" property="sexCode" jdbcType="VARCHAR"/>
+		<result column="birthday" property="birthday" jdbcType="DATE"/>
+		<result column="bornAddress_code" property="bornAddressCode" jdbcType="VARCHAR"/>
+		<result column="hometown_code" property="hometownCode" jdbcType="VARCHAR"/>
+		<result column="nation_code" property="nationCode" jdbcType="VARCHAR"/>
+		<result column="country_code" property="countryCode" jdbcType="VARCHAR"/>
+		<result column="idCardType_code" property="idCardTypeCode" jdbcType="VARCHAR"/>
+		<result column="idCard_number" property="idCardNumber" jdbcType="VARCHAR"/>
+		<result column="marray_code" property="marrayCode" jdbcType="VARCHAR"/>
+		<result column="gotqw_code" property="gotqwCode" jdbcType="VARCHAR"/>
+		<result column="policy_code" property="policyCode" jdbcType="VARCHAR"/>
+		<result column="health_code" property="healthCode" jdbcType="VARCHAR"/>
+		<result column="faith_code" property="faithCode" jdbcType="VARCHAR"/>
+		<result column="blood_code" property="bloodCode" jdbcType="VARCHAR"/>
+		<result column="photo" property="photo" jdbcType="VARCHAR"/>
+		<result column="idCard_validity" property="idCardValidity" jdbcType="INTEGER"/>
+		<result column="single_code" property="singleCode" jdbcType="VARCHAR"/>
+		<result column="type" property="type" jdbcType="VARCHAR"/>
+		<result column="zip_code" property="zipCode" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="phone" property="phone" jdbcType="VARCHAR"/>
+		<result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+		<result column="fax" property="fax" jdbcType="VARCHAR"/>
+		<result column="email" property="email" jdbcType="VARCHAR"/>
+		<result column="internet_address" property="internetAddress" jdbcType="VARCHAR"/>
+		<result column="chat_no" property="chatNo" jdbcType="VARCHAR"/>
+		<result column="weixin" property="weixin" jdbcType="VARCHAR"/>
+		<result column="qq" property="qq" jdbcType="VARCHAR"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="open_id" property="openId" jdbcType="VARCHAR"/>
+		<result column="post" property="post" jdbcType="VARCHAR"/>
+		<result column="password" property="password" jdbcType="VARCHAR"/>
+		<result column="province" property="province" jdbcType="VARCHAR"/>
+		<result column="city" property="city" jdbcType="VARCHAR"/>
+		<result column="area" property="area" jdbcType="VARCHAR"/>
+		<result column="creator" property="creator" jdbcType="VARCHAR"/>
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+		<result column="updator" property="updator" jdbcType="VARCHAR"/>
+		<result column="account" property="account" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,leaseholder_id,student_id,name,english_name,pinyin_name,ever_name,sex_code,birthday,bornAddress_code,hometown_code,nation_code,
+	country_code,idCardType_code,idCard_number,marray_code,gotqw_code,policy_code,health_code,faith_code,blood_code,photo,idCard_validity,
+	single_code,type,zip_code,address,phone,mobile,fax,email,internet_address,chat_no,weixin,qq,create_time,open_id,post,
+	password,province,city,area,creator,update_time,updator,account
+  </sql>
+  
+  <sql id="Simple_Column_whitout_photo" >
+	id,leaseholder_id,student_id,name,english_name,pinyin_name,ever_name,sex_code,birthday,bornAddress_code,hometown_code,nation_code,
+	country_code,idCardType_code,idCard_number,marray_code,gotqw_code,policy_code,health_code,faith_code,blood_code,idCard_validity,
+	single_code,type,zip_code,address,phone,mobile,fax,email,internet_address,chat_no,weixin,qq,create_time,open_id,post,
+	password,province,city,area,creator,update_time,updator,account
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.SysUser">
+  	insert into sys_user (leaseholder_id,student_id,name,english_name,pinyin_name,ever_name,sex_code,birthday,bornAddress_code,hometown_code,nation_code,
+	country_code,idCardType_code,idCard_number,marray_code,gotqw_code,policy_code,health_code,faith_code,blood_code,photo,idCard_validity,
+	single_code,type,zip_code,address,phone,mobile,fax,email,internet_address,chat_no,weixin,qq,create_time,open_id,post,password,province,city,area,creator,account) 
+  		values (#{leaseholderId},#{studentId},#{name},#{englishName},#{pinyinName},#{everName},#{sexCode},
+  		#{birthday},#{bornAddressCode},#{hometownCode},#{nationCode},#{countryCode},#{idCardTypeCode},
+  		#{idCardNumber},#{marrayCode},#{gotqwCode},#{policyCode},#{healthCode},#{faithCode},#{bloodCode},
+  		#{photo},#{idCardValidity},#{singleCode},#{type},#{zipCode},#{address},#{phone},#{mobile},#{fax},
+  		#{email},#{internetAddress},#{chatNo},#{weixin},#{qq},#{createTime},#{openId},#{post},#{password},#{province},#{city},#{area},#{creator},#{account})
+  </insert>
+  
+  <update id="update" parameterType="com.simple.model.SysUser">
+  	update sys_user set name=#{name},english_name=#{englishName},pinyin_name=#{pinyinName},
+  	ever_name=#{everName},sex_code=#{sexCode},birthday=#{birthday},bornAddress_code=#{bornAddressCode},hometown_code=#{hometownCode},
+  	nation_code=#{nationCode},country_code=#{countryCode},idCardType_code=#{idCardTypeCode},idCard_number=#{idCardNumber},marray_code=#{marrayCode},
+  	gotqw_code=#{gotqwCode},policy_code=#{policyCode},health_code=#{healthCode},faith_code=#{faithCode},blood_code=#{bloodCode},photo=#{photo},
+  	idCard_validity=#{idCardValidity},single_code=#{singleCode},type=#{type},zip_code=#{zipCode},address=#{address},phone=#{phone},mobile=#{mobile},
+  	fax=#{fax},email=#{email},internet_address=#{internetAddress},chat_no=#{chatNo},weixin=#{weixin},qq=#{qq},create_time=#{createTime},
+  	open_id=#{openId},post=#{post},province=#{province},city=#{city},area=#{area},update_time=#{updateTime},updator=#{updator}
+  	,account=#{account}
+  	where  leaseholder_id = #{leaseholderId} and student_id = #{studentId}
+  </update>
+  
+  <update id="updatePassword" parameterType="java.util.Map">
+  	update sys_user set password=#{password}
+  	where  leaseholder_id = #{leaseholderId} and student_id = #{studentId}
+  </update>
+  
+  <select id="queryList" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Simple_Column_whitout_photo"></include>
+  	from sys_user where 1 =1 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="studentId != null and studentId != ''" > and student_id = #{studentId} </if>
+  	<if test="name != null and name != ''" > and name like CONCAT('%',#{name},'%') </if>
+  	<if test="beginTime != null and beginTime != ''" > and create_time &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and create_time &lt;= #{endTime} </if>
+	<if test="type != null and type != ''" > and type = #{type} </if>
+	<if test="post != null and post != ''" > and post = #{post} </if>
+  	limit #{begin},#{end}
+  </select>
+  
+  <select id="queryCount" resultType="Integer" parameterType="java.util.Map">
+  	select count(1)
+  	from sys_user where 1 =1 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="studentId != null and studentId != ''" > and student_id = #{studentId} </if>
+  	<if test="name != null and name != ''" > and name like CONCAT('%',#{name},'%') </if>
+  	<if test="beginTime != null and beginTime != ''" > and create_time &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and create_time &lt;= #{endTime} </if>
+	<if test="type != null and type != ''" > and type = #{type} </if>
+	<if test="post != null and post != ''" > and post = #{post} </if>
+  </select>
+  
+  <select id="queryByStudentId" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from sys_user where 1 =1 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="studentId != null and studentId != ''" > and student_id = #{studentId} </if>
+  	limit 0,1
+  </select>
+  
+  <select id="queryTeachers" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	<choose>
+	  	<when test="ghs != null" >  
+		  	select distinct student_id , name
+		  		from sys_user where leaseholder_id = #{tanentId} and type = 'teacher'
+	  			and student_id in 
+	  			<foreach item="item" index="index" collection="ghs" open="(" separator="," close=")">  
+				  #{item}  
+				</foreach>
+				union
+				select student_id , name 
+				from sys_user where leaseholder_id = #{tanentId} and type = 'teacher'
+				limit #{begin},#{end}
+	  	</when>
+	  	<otherwise>
+	  		select student_id , name 
+				from sys_user where leaseholder_id = #{tanentId} and type = 'teacher'
+				limit #{begin},#{end}
+	  	</otherwise>
+  	</choose>
+  </select>
+  
+  <select id="queryByAccount" resultMap="BaseResultMap" parameterType="String">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from sys_user where account = #{account}
+  	limit 0,1
+  </select>
+  
+  <delete id="delete" parameterType="java.util.Map">
+  	delete 	from sys_user where id = #{id} and leaseholder_id = #{leaseholderId} 
+  </delete>
+  
+   <delete id="deleteBatchs" parameterType="java.util.Map">
+  	delete 	from sys_user where leaseholder_id = #{leaseholderId} and student_id in 
+  	<foreach item="item" index="index" collection="ghs" open="(" separator="," close=")">  
+				  #{item}  
+	</foreach>
+  </delete>
+  
+</mapper>

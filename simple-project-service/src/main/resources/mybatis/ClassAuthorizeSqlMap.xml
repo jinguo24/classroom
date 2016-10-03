@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="classAuthorize" >
+  <resultMap id="BaseResultMap" type="com.simple.model.ClassAuthorize" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="JSBH" property="jsbh" jdbcType="VARCHAR"/>
+		<result column="JSMC" property="jsmc" jdbcType="VARCHAR"/>
+		<result column="SQZH" property="sqzh" jdbcType="VARCHAR"/>
+		<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+		<result column="KCBH" property="kcbh" jdbcType="VARCHAR"/>
+		<result column="KCMC" property="kcmc" jdbcType="VARCHAR"/>
+		<result column="GMRQ" property="gmrq" jdbcType="DATE"/>
+		<result column="SQKSSJ" property="sqkssj" jdbcType="DATE"/>
+		<result column="SQJSSJ" property="sqjssj" jdbcType="DATE"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,JSBH,JSMC,SQZH,BZ,CJR,CJSJ,KCBH,KCMC,GMRQ,SQKSSJ,SQJSSJ,KCXLBH
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.ClassAuthorize">
+  	insert into class_authorize (TANENTID,JSBH,JSMC,SQZH,BZ,CJR,CJSJ,KCBH,KCMC,GMRQ,SQKSSJ,SQJSSJ) 
+  		values (#{tanentid},#{jsbh},#{jsmc},#{sqzh},#{bz},#{cjr},#{cjsj},#{kcbh},#{kcmc},#{gmrq},#{sqkssj},#{sqjssj})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from class_authorize where 1 =1 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+  	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
+  	<if test="sqzh != null and sqzh != ''" > and SQZH = #{sqzh} </if>
+  	<if test="jsmc != null and jsmc != ''" > and JSMC like CONCAT('%',#{jsmc},'%') </if>
+  	<if test="kcbh != null and kcbh != ''" > and KCMC = #{kcbh} </if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM class_authorize 
+		WHERE 1=1
+		<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+	  	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
+	  	<if test="sqzh != null and sqzh != ''" > and SQZH = #{sqzh} </if>
+	  	<if test="jsmc != null and jsmc != ''" > and JSMC like CONCAT('%',#{jsmc},'%') </if>
+	  	<if test="kcbh != null and kcbh != ''" > and KCMC = #{kcbh} </if>
+  </select>
+  
+  <delete id="delete" parameterType="Integer">
+  		delete from class_authorize where LINEID = #{id};
+  </delete>
+  
+  <update id="update" parameterType="com.simple.model.ClassAuthorize">
+    update class_authorize set 
+		TANENTID      = #{tanentid},
+		JSBH          = #{jsbh},    
+		JSMC          = #{jsmc},    
+		SQZH          = #{sqzh},    
+		BZ            = #{bz},      
+		CJR           = #{cjr},     
+		CJSJ          = #{cjsj},    
+		KCBH          = #{kcbh},    
+		KCMC          = #{kcmc},    
+		GMRQ          = #{gmrq},    
+		SQKSSJ        = #{sqkssj},  
+		SQJSSJ        = #{sqjssj}
+  	where LINEID=#{lineid}
+  </update>
+  
+  <delete id="deleteByJsbh" parameterType="java.util.Map">
+  		delete from class_authorize where TANENTID = #{leaseholderId} and JSBH = #{jsbh}
+  </delete>
+  
+  <select id="queryMaxJSSJ" parameterType="java.util.Map" resultType="java.util.Date">
+  	select max(SQJSSJ) from class_authorize where TANENTID = #{leaseholderId} and JSBH = #{jsbh} and KCBH =#{kcbh}
+  </select>
+  
+  <select id="queryMinJSSJ" parameterType="java.util.Map" resultType="java.util.Date">
+  	select min(SQJSSJ) from class_authorize where TANENTID = #{leaseholderId} and JSBH = #{jsbh} and KCBH =#{kcbh}
+  </select>
+  
+  <select id="queryAuthCourseIds" parameterType="String" resultType="String">
+  	select KCBH from class_authorize where TANENTID =#{tanentId} and SQKSSJ &lt;= NOW() and SQJSSJ &gt;= NOW()
+  </select>
+  
+</mapper>

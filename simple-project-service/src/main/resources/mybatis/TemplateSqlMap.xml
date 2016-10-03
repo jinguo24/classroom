@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="template" >
+  <resultMap id="BaseResultMap" type="com.simple.model.Template" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="leaseholder_id" property="leaseholderId" jdbcType="VARCHAR" />
+		<result column="type" property="templateType" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="DATE" />
+		<result column="random" property="random" jdbcType="VARCHAR" />
+		<result column="category" property="category" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,leaseholder_id,type,code,name,remark,creator,create_time,random,category
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.Template">
+  	insert into template (leaseholder_id,type,code,name,remark,creator,create_time,random,category) 
+  		values (#{leaseholderId},#{templateType},#{code},#{name},#{remark},#{creator},#{createTime},#{random},#{category})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from template where 1 =1 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and (leaseholder_id = #{leaseholderId} or leaseholder_id = 'ROOT')</if>
+  	<if test="code != null and code != ''" > and code = #{code} </if>
+  	<if test="type != null and type != ''" > and type = #{type} </if>
+  	<if test="name != null and name != ''" > and name like CONCAT('%',#{name},'%') </if>
+  	<if test="category != null and category != ''" > and category = #{category} </if>
+  	<if test="beginTime != null and beginTime != ''" > and create_time &gt;= #{beginTime} </if>
+  	<if test="endTime != null and endTime != ''" > and create_time &lt;= #{endTime} </if>
+  	<if test="codes != null ">
+  		and code in 
+	  	<foreach item="item" index="index" collection="codes" open="(" separator="," close=")">  
+		  #{item}  
+		</foreach>
+  	</if>
+  	
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM template 
+		WHERE 1=1
+		<if test="leaseholderId != null and leaseholderId != ''" > and (leaseholder_id = #{leaseholderId} or leaseholder_id = 'ROOT' )</if>
+	  	<if test="code != null and code != ''" > and code = #{code} </if>
+	  	<if test="type != null and type != ''" > and type = #{type} </if>
+	  	<if test="name != null and name != ''" > and name like CONCAT('%',#{name},'%') </if>
+	  	<if test="category != null and category != ''" > and category = #{category} </if>
+	  	<if test="beginTime != null and beginTime != ''" > and create_time &gt;= #{beginTime} </if>
+	  	<if test="endTime != null and endTime != ''" > and create_time &lt;= #{endTime} </if>
+	  	<if test="codes != null ">
+	  		and code in 
+		  	<foreach item="item" index="index" collection="codes" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach>
+	  	</if>
+  </select>
+  
+   <select id="queryById" resultMap="BaseResultMap" parameterType="Integer">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from template where id = #{id}
+  </select>
+  
+  <delete id="delete" parameterType="Integer">
+  		delete from template where id = #{id};
+  </delete>
+  
+  <update id="update" parameterType="com.simple.model.Template">
+  	update template set type = #{templateType},code=#{code},name=#{name},remark=#{remark},
+  	creator=#{creator},create_time=#{createTime},random=#{random},category=#{category} 
+  	where id=#{id} 
+  </update>
+  
+</mapper>

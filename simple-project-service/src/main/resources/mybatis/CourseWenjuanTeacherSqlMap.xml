@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="courseWenjuanTearcher" >
+  <resultMap id="BaseResultMap" type="com.simple.model.CourseWenjuanTeacher" >
+		<id column="LINEID" property="lineId" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentId" jdbcType="VARCHAR"/>
+		<result column="GH" property="gh" jdbcType="VARCHAR"/>
+		<result column="XM" property="xm" jdbcType="VARCHAR"/>
+		<result column="TEACHER_WENJUAN" property="teacherWenjuan" jdbcType="VARCHAR"/>
+		<result column="STUDENT_WENJUAN" property="studentWenjuan" jdbcType="VARCHAR"/>
+		<result column="KTZY_WENJUAN" property="ktzyWenjuan" jdbcType="VARCHAR"/>
+		<result column="KHZY_WENJUAN" property="khzyWenjuan" jdbcType="VARCHAR"/>
+		<result column="OTHER_WENJUAN" property="otherWenjuan" jdbcType="VARCHAR"/>
+		<result column="KCBH" property="kcbh" jdbcType="VARCHAR"/>
+		<result column="BEGIN_TIME" property="begin" jdbcType="DATE"/>
+		<result column="END_TIME" property="end" jdbcType="DATE"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,GH,XM,TEACHER_WENJUAN,STUDENT_WENJUAN,KTZY_WENJUAN,KHZY_WENJUAN,OTHER_WENJUAN,KCBH,BEGIN_TIME,END_TIME
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.CourseWenjuanTeacher">
+  	insert into course_wenjuan_teacher (TANENTID,GH,XM,TEACHER_WENJUAN,STUDENT_WENJUAN,KTZY_WENJUAN,KHZY_WENJUAN,OTHER_WENJUAN,KCBH,BEGIN_TIME,END_TIME) 
+  		values (#{tanentId},#{gh},#{xm},#{teacherWenjuan},#{studentWenjuan},#{ktzyWenjuan},#{khzyWenjuan},#{otherWenjuan},#{kcbh},#{begin},#{end})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from course_wenjuan_teacher where GH = #{gh} and KCBH = #{kcbh}
+  	limit 0,1
+  </select>
+  
+  <select id="queryValidTeachers" resultType="String" parameterType="java.util.Map">
+  	select distinct GH
+  	from course_wenjuan_teacher where TANENTID = #{tanentId} and BEGIN_TIME &lt;= #{time} and END_TIME &gt;= #{time}
+  </select>
+  
+  <update id="update" parameterType="com.simple.model.CourseWenjuanTeacher">
+    update course_wenjuan_teacher set 
+    	TANENTID            = #{tanentId},
+		XM         			= #{xm},    
+		TEACHER_WENJUAN     = #{teacherWenjuan},    
+		STUDENT_WENJUAN     = #{studentWenjuan},    
+		KTZY_WENJUAN       	= #{ktzyWenjuan} ,
+		KHZY_WENJUAN  		= #{khzyWenjuan},
+		OTHER_WENJUAN 		= #{otherWenjuan},
+		BEGIN_TIME			= #{begin},
+		END_TIME			= #{end}
+  	where GH = #{gh} and KCBH = #{kcbh}
+  </update>
+</mapper>

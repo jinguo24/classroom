@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="questionResult" >
+  <resultMap id="BaseResultMap" type="com.simple.model.QuestionResult" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="leaseholder_id" property="leaseholderId" jdbcType="VARCHAR" />
+		<result column="student_id" property="studentId" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="activity_code" property="activityCode" jdbcType="VARCHAR" />
+		<result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+		<result column="tempalte_code" property="tempalteCode" jdbcType="VARCHAR" />
+		<result column="template_name" property="templateName" jdbcType="VARCHAR" />
+		<result column="section_code" property="sectionCode" jdbcType="VARCHAR" />
+		<result column="question_code" property="questionCode" jdbcType="VARCHAR" />
+		<result column="question_item_code" property="questionItemCode" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="skbh" property="skbh" jdbcType="VARCHAR" />
+		<result column="xxbh" property="xxbh" jdbcType="VARCHAR" />
+		<result column="xxmc" property="xxmc" jdbcType="VARCHAR" />
+		<result column="njbh" property="njbh" jdbcType="VARCHAR" />
+		<result column="njmc" property="njmc" jdbcType="VARCHAR" />
+		<result column="bjbh" property="bjbh" jdbcType="VARCHAR" />
+		<result column="bjmc" property="bjmc" jdbcType="VARCHAR" />
+		<result column="xn" property="xn" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,leaseholder_id,student_id,code,activity_code,activity_name,tempalte_code,template_name,
+	section_code,question_code,question_item_code,content,skbh,xxbh,xxmc,njbh,njmc,bjbh,bjmc,xn
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.QuestionResult">
+  	insert into questionResult (leaseholder_id,student_id,code,activity_code,activity_name,tempalte_code,template_name,section_code,question_code,
+  	question_item_code,content,skbh,xxbh,xxmc,njbh,njmc,bjbh,bjmc,xn) 
+  		values (#{leaseholderId},#{studentId},#{code},#{activityCode},#{activityName},#{tempalteCode},#{templateName},#{sectionCode},#{questionCode},
+  		#{questionItemCode},#{content},#{skbh},#{xxbh},#{xxmc},#{njbh},#{njmc},#{bjbh},#{bjmc},#{xn})
+  </insert>
+  
+  <select id="itemCount" resultType="Integer" parameterType="String">
+  	select count(1) from questionResult where question_item_code = #{questionItemCode}
+  </select>
+  
+  <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from questionResult where 1=1
+  	<if test="questionCode != null and questionCode != ''" > and question_code = #{questionCode} </if>
+  	<if test="code != null and code != ''" > and code = #{code} </if>
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="studentId != null and studentId != ''" > and student_id = #{studentId} </if>
+  	<if test="sectionCode != null and sectionCode != ''" > and section_code = #{sectionCode} </if>
+  	<if test="tempalteCode != null and tempalteCode != ''" > and tempalte_code = #{tempalteCode} </if>
+  	<if test="activityCode != null and activityCode != ''" > and activity_code = #{activityCode} </if>
+  	<if test="questionItemCode != null and questionItemCode != ''" > and question_item_code = #{questionItemCode} </if>
+  	<if test="skbh != null and skbh != ''" > and skbh = #{skbh} </if>
+  	<if test="xxbh != null and xxbh != ''" > and xxbh = #{xxbh} </if>
+  	<if test="xxmc != null and xxmc != ''" > and xxmc = #{xxmc} </if>
+  	<if test="njbh != null and njbh != ''" > and njbh = #{njbh} </if>
+  	<if test="njmc != null and njmc != ''" > and njmc = #{njmc} </if>
+  	<if test="bjbh != null and bjbh != ''" > and bjbh = #{bjbh} </if>
+  	<if test="bjmc != null and bjmc != ''" > and bjmc = #{bjmc} </if>
+  	<if test="xn  > 0 " > and xn = #{xn} </if>
+  	limit #{begin},#{size}
+  </select>
+  
+  
+  <select id="queryCount" resultType="Integer" parameterType="java.util.Map">
+  	select 
+  	count(1)
+  	from questionResult where 1=1
+  	<if test="questionCode != null and questionCode != ''" > and question_code = #{questionCode} </if>
+  	<if test="code != null and code != ''" > and code = #{code} </if>
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="studentId != null and studentId != ''" > and student_id = #{studentId} </if>
+  	<if test="sectionCode != null and sectionCode != ''" > and section_code = #{sectionCode} </if>
+  	<if test="tempalteCode != null and tempalteCode != ''" > and tempalte_code = #{tempalteCode} </if>
+  	<if test="activityCode != null and activityCode != ''" > and activity_code = #{activityCode} </if>
+  	<if test="questionItemCode != null and questionItemCode != ''" > and question_item_code = #{questionItemCode} </if>
+  	<if test="skbh != null and skbh != ''" > and skbh = #{skbh} </if>
+  	<if test="xxbh != null and xxbh != ''" > and xxbh = #{xxbh} </if>
+  	<if test="xxmc != null and xxmc != ''" > and xxmc = #{xxmc} </if>
+  	<if test="njbh != null and njbh != ''" > and njbh = #{njbh} </if>
+  	<if test="njmc != null and njmc != ''" > and njmc = #{njmc} </if>
+  	<if test="bjbh != null and bjbh != ''" > and bjbh = #{bjbh} </if>
+  	<if test="bjmc != null and bjmc != ''" > and bjmc = #{bjmc} </if>
+  	<if test="xn  > 0 " > and xn = #{xn} </if>
+  </select>
+  
+  <select id="queryTemplateCodes" resultType="String" parameterType="java.util.Map">
+  	select distinct tempalte_code from questionResult where 1=1
+  	<if test="questionCode != null and questionCode != ''" > and question_code = #{questionCode} </if>
+  	<if test="code != null and code != ''" > and code = #{code} </if>
+  	<if test="leaseholderId != null and leaseholderId != ''" > and leaseholder_id = #{leaseholderId} </if>
+  	<if test="studentId != null and studentId != ''" > and student_id = #{studentId} </if>
+  	<if test="sectionCode != null and sectionCode != ''" > and section_code = #{sectionCode} </if>
+  	<if test="tempalteCode != null and tempalteCode != ''" > and tempalte_code = #{tempalteCode} </if>
+  	<if test="activityCode != null and activityCode != ''" > and activity_code = #{activityCode} </if>
+  	<if test="questionItemCode != null and questionItemCode != ''" > and question_item_code = #{questionItemCode} </if>
+  	<if test="skbh != null and skbh != ''" > and skbh = #{skbh} </if>
+  	<if test="xxbh != null and xxbh != ''" > and xxbh = #{xxbh} </if>
+  	<if test="xxmc != null and xxmc != ''" > and xxmc = #{xxmc} </if>
+  	<if test="njbh != null and njbh != ''" > and njbh = #{njbh} </if>
+  	<if test="njmc != null and njmc != ''" > and njmc = #{njmc} </if>
+  	<if test="bjbh != null and bjbh != ''" > and bjbh = #{bjbh} </if>
+  	<if test="bjmc != null and bjmc != ''" > and bjmc = #{bjmc} </if>
+  	<if test="xn  > 0 " > and xn = #{xn} </if>
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="teachingStudent" >
+  <resultMap id="BaseResultMap" type="com.simple.model.TeachingStudent" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="SKBH" property="skbh" jdbcType="VARCHAR"/>
+		<result column="BJBH" property="bjbh" jdbcType="VARCHAR"/>
+		<result column="BJMC" property="bjmc" jdbcType="VARCHAR"/>
+		<result column="GH" property="gh" jdbcType="VARCHAR"/>
+		<result column="XM" property="xm" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+		<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+		<result column="XN" property="xn" jdbcType="INTEGER"/>
+		<result column="NJMC" property="njmc" jdbcType="VARCHAR"/>
+		<result column="NJBH" property="njbh" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,SKBH,BJBH,BJMC,GH,XM,CJR,CJSJ,BZ,XN,NJMC,NJBH
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.TeachingStudent">
+  	insert into teaching_student (TANENTID,SKBH,BJBH,BJMC,GH,XM,CJR,CJSJ,BZ,XN,NJMC,NJBH) 
+  		values (#{tanentid},#{skbh},#{bjbh},#{bjmc},#{gh},#{xm},#{cjr},#{cjsj},#{bz},#{xn},#{njmc},#{njbh})
+  </insert>
+  
+   <select id="queryByKCBH" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from teaching_student where TANENTID = #{leaseholderId}  and SKBH = #{skbh}  
+  	limit #{begin},#{end} 
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM teaching_student 
+	    WHERE TANENTID = #{leaseholderId}  and SKBH = #{skbh}
+  </select>
+  
+</mapper>

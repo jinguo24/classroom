@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="class" >
+  <resultMap id="BaseResultMap" type="com.simple.model.TClass" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="XXHB" property="xxhb" jdbcType="VARCHAR"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
+		<result column="NJBH" property="njbh" jdbcType="VARCHAR"/>
+		<result column="NJMC" property="njmc" jdbcType="VARCHAR"/>
+		<result column="BJBH" property="bjbh" jdbcType="VARCHAR"/>
+		<result column="BJMC" property="bjmc" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+		<result column="GH" property="gh" jdbcType="VARCHAR"/>
+		<result column="XM" property="xm" jdbcType="VARCHAR"/>
+		<result column="XN" property="xn" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,XXHB,XXMC,NJBH,NJMC,BJBH,BJMC,CJR,CJSJ,GH,XM,XN
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.TClass">
+  	insert into t_class (TANENTID,XXHB,XXMC,NJBH,NJMC,BJBH,BJMC,CJR,CJSJ,GH,XM,XN) 
+  		values (#{tanentid},#{xxhb},#{xxmc},#{njbh},#{njmc},#{bjbh},#{bjmc},#{cjr},#{cjsj},#{gh},#{xm},#{xn})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from t_class where 1 =1
+  	<if test="lineid != null and lineid != ''" > and LINEID = #{lineid} </if> 
+  	<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+  	<if test="xxhb != null and xxhb != ''" > and XXHB = #{xxhb} </if>
+  	<if test="xxmc != null and xxmc != ''" > and XXMC like CONCAT('%',#{xxmc},'%') </if>
+  	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+  	<if test="njmc != null and njmc != ''" > and NJMC like CONCAT('%',#{njmc},'%') </if>
+  	<if test="bjbh != null and bjbh != ''" > and BJBH = #{bjbh} </if>
+  	<if test="bjmc != null and bjmc != ''" > and BJMC like CONCAT('%',#{bjmc},'%') </if>
+  	<if test="gh != null and gh != ''" > and GH = #{gh} </if>
+  	<if test="xm != null and xm != ''" > and XM like CONCAT('%',#{xm},'%') </if>
+  	<if test="xn  > 0 " > and XN = #{xn} </if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM t_class 
+		WHERE 1=1
+		<if test="lineid != null and lineid != ''" > and LINEID = #{lineid} </if> 
+		<if test="leaseholderId != null and leaseholderId != ''" > and TANENTID = #{leaseholderId} </if>
+	  	<if test="xxhb != null and xxhb != ''" > and XXHB = #{xxhb} </if>
+	  	<if test="xxmc != null and xxmc != ''" > and XXMC like CONCAT('%',#{xxmc},'%') </if>
+	  	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+	  	<if test="njmc != null and njmc != ''" > and NJMC like CONCAT('%',#{njmc},'%') </if>
+	  	<if test="bjbh != null and bjbh != ''" > and BJBH = #{bjbh} </if>
+	  	<if test="bjmc != null and bjmc != ''" > and BJMC like CONCAT('%',#{bjmc},'%') </if>
+	  	<if test="gh != null and gh != ''" > and GH = #{gh} </if>
+	  	<if test="xm != null and xm != ''" > and XM like CONCAT('%',#{xm},'%') </if>
+	  	<if test="xn  > 0 " > and XN = #{xn} </if>
+  </select>
+  
+  <select id="queryById" resultMap="BaseResultMap" parameterType="Integer">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from t_class where LINEID = #{id}
+  </select>
+  
+  
+  <delete id="delete" parameterType="Integer">
+  		delete from t_class where LINEID = #{id};
+  </delete>
+  
+  <update id="update" parameterType="com.simple.model.TClass">
+    update t_class set 
+  	TANENTID=#{tanentid},XXHB=#{xxhb},XXMC=#{xxmc},NJBH=#{njbh},NJMC=#{njmc},BJBH=#{bjbh},BJMC=#{bjmc},CJR=#{cjr},CJSJ=#{cjsj},GH=#{gh},XM=#{xm},XN=#{xn}
+  	where LINEID=#{lineid}
+  </update>
+  
+  
+  <resultMap id="NianJiResultMap" type="com.simple.model.api.NianJi" >
+		<result column="NJBH" property="njbh" jdbcType="VARCHAR"/>
+		<result column="NJMC" property="njmc" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="queryNianJi" resultMap="NianJiResultMap" parameterType="java.util.Map">
+  	select  distinct NJBH ,NJMC from t_class where TANENTID = #{tanentId}
+  	<if test="xn  > 0 " > and XN = #{xn} </if>
+  	<if test="xxbh != null and xxbh != ''" > and XXHB = #{xxbh} </if>
+  	order by NJBH asc 
+  </select>
+  
+  <resultMap id="BanJiResultMap" type="com.simple.model.api.BanJi" >
+		<result column="BJBH" property="bjbh" jdbcType="VARCHAR"/>
+		<result column="BJMC" property="bjmc" jdbcType="VARCHAR"/>
+		<result column="XM" property="xm" jdbcType="VARCHAR"/>
+		<result column="GH" property="gh" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="queryBanJi" resultMap="BanJiResultMap" parameterType="java.util.Map">
+  	select  distinct BJBH ,BJMC,XM,GH from t_class where TANENTID = #{tanentId} 
+  	<if test="xn  > 0 " > and XN = #{xn} </if>
+  	<if test="njbh != null and njbh != ''" > and NJBH = #{njbh} </if>
+  	<if test="xxbh != null and xxbh != ''" > and XXHB = #{xxbh} </if>
+  	order by BJBH asc 
+  </select>
+  
+  <select id="queryXn" parameterType="java.util.Map" resultType="Integer">
+     select distinct xn from t_class where TANENTID = #{tanentId} 
+     <if test="xxbh != null and xxbh != ''" > and XXHB = #{xxbh} </if>
+     order by xn desc 
+  </select> 
+  
+  <resultMap id="XueXiaoResultMap" type="com.simple.model.XueXiao" >
+		<result column="XXHB" property="xxbh" jdbcType="VARCHAR"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="queryXueXiao" parameterType="java.util.Map" resultMap="XueXiaoResultMap">
+     select  distinct XXHB,XXMC from t_class where 1 =1 
+     <if test="tanentId != null and tanentId != ''" > and TANENTID = #{tanentId} </if>
+  </select> 
+  
+</mapper>

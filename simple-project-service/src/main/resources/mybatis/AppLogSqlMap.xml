@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="appLog" >
+  <resultMap id="BaseResultMap" type="com.simple.model.AppLog" >
+		<id column="LINEID" property="lineId" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentId" jdbcType="VARCHAR"/>
+		<result column="LOG_CONTENT" property="logContent" jdbcType="VARCHAR"/>
+		<result column="CREATE_TIME" property="createTime" jdbcType="DATE"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,LOG_CONTENT,CREATE_TIME
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.AppLog">
+  	insert into app_log (TANENTID,LOG_CONTENT,CREATE_TIME) 
+  		values (#{tanentId},#{logContent},#{createTime})
+  </insert>
+</mapper>

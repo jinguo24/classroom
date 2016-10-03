@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="courseImage" >
+  <resultMap id="BaseResultMap" type="com.simple.model.CourseImage" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="TANENTID" property="tanentid" jdbcType="VARCHAR"/>
+		<result column="XXBH" property="xxbh" jdbcType="VARCHAR"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
+		<result column="JSBH" property="jsbh" jdbcType="VARCHAR"/>
+		<result column="JSMC" property="jsmc" jdbcType="VARCHAR"/>
+		<result column="KCBH" property="kcbh" jdbcType="VARCHAR"/>
+		<result column="KCMC" property="kcmc" jdbcType="VARCHAR"/>
+		<result column="KCTP" property="kctp" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+	LINEID,TANENTID,XXBH,XXMC,JSBH,JSMC,KCBH,KCMC,KCTP,CJR,CJSJ
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.CourseImage">
+  	insert into class_course_image (TANENTID,XXBH,XXMC,JSBH,JSMC,KCBH,KCMC,KCTP,CJR,CJSJ) 
+  		values (#{tanentid},#{xxbh},#{xxmc},#{jsbh},#{jsmc},#{kcbh},#{jsmc},#{kctp},#{cjr},#{cjsj})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from class_course_image where TANENTID = #{tanentid} and KCBH = #{kcbh}
+  	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
+  	limit 0,1
+  </select>
+  
+  <update id="update" parameterType="com.simple.model.CourseImage">
+    update class_course_image set 
+		XXBH         = #{xxbh},    
+		XXMC         = #{xxmc},    
+		JSMC         = #{jsmc},    
+		kcmc       = #{kcmc},    
+		kctp       = #{kctp}   
+  	where TANENTID  = #{tanentid} and JSBH = #{jsbh} and KCBH = #{kcbh}
+  </update>
+</mapper>

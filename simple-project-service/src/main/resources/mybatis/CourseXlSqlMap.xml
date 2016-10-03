@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="courseXl" >
+  <resultMap id="BaseResultMap" type="com.simple.model.CourseXl" >
+		<id column="LINEID" property="lineid" jdbcType="INTEGER"/>
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+		<result column="BZ" property="bz" jdbcType="VARCHAR"/>
+		<result column="KCTP" property="kctp" jdbcType="VARCHAR"/>
+		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
+		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+		<result column="PARENT_BH" property="parentbh" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,KCXLBH,KCXLMC,BZ,KCTP,CJR,CJSJ,PARENT_BH
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.CourseXl">
+  	insert into course_xl (KCXLBH,KCXLMC,BZ,KCTP,CJR,CJSJ,PARENT_BH) 
+  		values (#{kcxlbh},#{kcxlmc},#{bz},#{kctp},#{cjr},#{cjsj},#{parentbh})
+  </insert>
+  
+   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from course_xl where PARENT_BH IS NULL OR  PARENT_BH = ''
+  	<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
+	<if test="kcxlmc != null and kcxlmc != ''" > and KCXLMC like CONCAT('%',#{kcxlmc},'%') </if>
+  	limit #{begin},#{size}
+  </select>
+  
+   <select id="queryByParentCode" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from course_xl where PARENT_BH =#{code}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	   SELECT count(1) FROM course_xl 
+		WHERE 1=1
+		<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
+		<if test="kcxlmc != null and kcxlmc != ''" > and KCXLMC like CONCAT('%',#{kcxlmc},'%') </if>
+  </select>
+  
+  <delete id="delete" parameterType="Integer">
+  		delete from course_xl where LINEID = #{id};
+  </delete>
+  
+  <update id="update" parameterType="com.simple.model.CourseXl">
+    update course_xl set 
+		KCXLBH          = #{kcxlbh}          ,
+		KCXLMC          = #{kcxlmc}          ,
+		BZ            = #{bz}            ,
+		KCTP            = #{kctp}          ,
+		PARENT_BH       = #{parentbh}       
+  	where LINEID=#{lineid}
+  </update>
+  
+  <resultMap id="KeChengXiLieResultMap" type="com.simple.model.api.KeChengXiLie" >
+		<result column="KCXLBH" property="kcxlbh" jdbcType="VARCHAR"/>
+		<result column="KCXLMC" property="kcxlmc" jdbcType="VARCHAR"/>
+		<result column="KCTP" property="kctp" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="queryXiLie" resultMap="KeChengXiLieResultMap" parameterType="java.util.Map">
+  	select KCXLBH,KCXLMC,KCTP
+  	from course_xl where KCXLBH in  
+  	<foreach item="item" index="index" collection="xlbhlist" open="(" separator="," close=")">  
+	  #{item}  
+	</foreach>
+	limit #{begin},#{size}
+  </select>
+  <select id="queryXiLieCount" resultType="Integer" parameterType="java.util.Map">
+  	select count(1) from course_xl where KCXLBH in  
+  	<foreach item="item" index="index" collection="xlbhlist" open="(" separator="," close=")">  
+	  #{item}  
+	</foreach>
+  </select>
+  
+</mapper>
